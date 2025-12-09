@@ -303,11 +303,7 @@ def run_depthwise_1x1_asymmetric_qat(baseline_model, trainloader, testloader, de
     exp5_model.train()
     exp5_model.fuse_model()
     
-    # Use asymmetric quantization config
-    exp5_model.qconfig = torch.quantization.QConfig(
-        activation=torch.quantization.default_observer,
-        weight=torch.quantization.default_per_channel_weight_observer
-    )
+    exp5_model.qconfig = torch.quantization.get_default_qat_qconfig(backend)
     torch.quantization.prepare_qat(exp5_model, inplace=True)
     
     for name, param in exp5_model.named_parameters():
